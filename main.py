@@ -1,224 +1,280 @@
-import random
 import streamlit as st
 
-# 1. 페이지 기본 설정
+# 1. 페이지 레이아웃 및 탭 설정
 st.set_page_config(
-    page_title="퐁당퐁당 MBTI 여행 연구소 ✨",
-    page_icon="✈️",
+    page_title="L'Étoile Joaillerie | 탄생석 살롱",
+    page_icon="💎",
     layout="centered"
 )
 
-# 2. 러블리한 파스텔 핑크/크림 테마 커스텀 스타일 (순수 CSS 인라인 주입)
+# 2. 고급스러운 딥 네이비 & 샴페인 골드 테마 커스텀 CSS
 st.markdown("""
 <style>
-    /* 전체 배경 톤 */
+    /* 전체 배경 및 폰트 */
     .stApp {
-        background: linear-gradient(135deg, #fff5f7 0%, #fcf0f8 50%, #f5f3ff 100%);
-        font-family: 'Pretendard', sans-serif;
+        background: radial-gradient(circle at top, #141b2d 0%, #0a0d16 100%);
+        color: #e5e5e5;
+        font-family: 'Cinzel', 'Pretendard', -apple-system, sans-serif;
     }
-    
-    /* 카드 컴포넌트 */
-    .cute-card {
-        background-color: #ffffff;
-        border-radius: 20px;
-        padding: 24px;
-        margin: 16px 0;
-        box-shadow: 0 8px 24px rgba(255, 182, 193, 0.25);
-        border: 2px dashed #ffb6c1;
-    }
-    
-    /* 귀여운 헤더 텍스트 */
-    .cute-title {
-        color: #ff6584;
+
+    /* 서브타이틀 및 헤더 */
+    .brand-title {
+        text-align: center;
+        color: #d4af37;
         font-size: 2.2rem;
-        font-weight: 800;
-        text-align: center;
-        margin-bottom: 8px;
-    }
-    .cute-sub {
-        color: #7d6b7d;
-        text-align: center;
-        font-size: 1.05rem;
-        margin-bottom: 24px;
+        letter-spacing: 0.25em;
+        text-transform: uppercase;
+        margin-bottom: 4px;
+        font-weight: 300;
     }
     
-    /* 뱃지 */
-    .pill-badge {
-        display: inline-block;
-        background-color: #ffe4e9;
-        color: #ff477e;
-        padding: 6px 14px;
-        border-radius: 999px;
+    .brand-sub {
+        text-align: center;
+        color: #a3aab8;
+        font-size: 0.95rem;
+        letter-spacing: 0.12em;
+        margin-bottom: 36px;
+    }
+
+    /* 럭셔리 카드 박스 */
+    .gem-card {
+        background: linear-gradient(145deg, rgba(26, 34, 53, 0.85) 0%, rgba(15, 20, 32, 0.9) 100%);
+        border: 1px solid rgba(212, 175, 55, 0.35);
+        box-shadow: 0 12px 35px rgba(0, 0, 0, 0.6), inset 0 0 15px rgba(212, 175, 55, 0.05);
+        border-radius: 12px;
+        padding: 32px 28px;
+        margin-top: 24px;
+        text-align: center;
+    }
+
+    .gem-icon {
+        font-size: 3.5rem;
+        margin-bottom: 12px;
+        filter: drop-shadow(0 0 12px rgba(212, 175, 55, 0.4));
+    }
+
+    .gem-name {
+        color: #f7e7ce;
+        font-size: 1.8rem;
+        letter-spacing: 0.15em;
+        margin-bottom: 6px;
+        font-weight: 600;
+    }
+
+    .gem-eng {
+        color: #d4af37;
         font-size: 0.85rem;
-        font-weight: 700;
-        margin-right: 6px;
-        margin-bottom: 8px;
+        letter-spacing: 0.25em;
+        text-transform: uppercase;
+        margin-bottom: 20px;
     }
-    
+
+    .gem-divider {
+        width: 60px;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, #d4af37, transparent);
+        margin: 16px auto;
+    }
+
+    .gem-meaning {
+        color: #e5cf92;
+        font-size: 1.05rem;
+        letter-spacing: 0.08em;
+        font-weight: 500;
+        margin-bottom: 14px;
+    }
+
+    .gem-desc {
+        color: #b0b8c4;
+        font-size: 0.95rem;
+        line-height: 1.8;
+        letter-spacing: 0.02em;
+        text-align: justify;
+        word-break: keep-all;
+        padding: 0 10px;
+    }
+
+    /* 우아한 키워드 태그 */
+    .tag-container {
+        margin-top: 22px;
+    }
+
+    .gem-tag {
+        display: inline-block;
+        border: 1px solid rgba(212, 175, 55, 0.45);
+        color: #d4af37;
+        background-color: rgba(212, 175, 55, 0.08);
+        padding: 4px 14px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        letter-spacing: 0.08em;
+        margin: 4px;
+    }
+
     /* 버튼 스타일 오버라이드 */
     .stButton > button {
-        background: linear-gradient(90deg, #ff758c 0%, #ff7eb3 100%) !important;
-        color: white !important;
+        background: linear-gradient(135deg, #d4af37 0%, #aa820a 100%) !important;
+        color: #0d121c !important;
         border: none !important;
-        border-radius: 30px !important;
-        padding: 0.6rem 2rem !important;
-        font-size: 1.1rem !important;
-        font-weight: 700 !important;
+        border-radius: 4px !important;
+        padding: 0.65rem 2.2rem !important;
+        font-size: 0.95rem !important;
+        font-weight: 600 !important;
+        letter-spacing: 0.15em !important;
         width: 100% !important;
-        box-shadow: 0 4px 15px rgba(255, 117, 140, 0.4) !important;
-        transition: transform 0.1s ease-in-out !important;
+        box-shadow: 0 6px 20px rgba(212, 175, 55, 0.25) !important;
+        transition: all 0.25s ease-in-out !important;
     }
     .stButton > button:hover {
-        transform: scale(1.02);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(212, 175, 55, 0.45) !important;
     }
 </style>
 """, unsafe_allow_html=True)
 
-# 3. MBTI별 귀여운 여행 데이터
-DESTINATIONS = {
-    "INFP": {
-        "place": "오스트리아 할슈타트 🦢",
-        "tagline": "동화 속 호숫가에서 쓰는 감성 다이어리",
-        "desc": "조용한 백조들과 반짝이는 호수를 바라보며 나만의 몽글몽글한 상상에 빠져보세요.",
-        "tips": ["필름 카메라 챙기기", "호숫가 벤치에서 좋아하는 노래 듣기", "동화풍 엽서 사기"]
+# 3. 12개월 탄생석 데이터 (원석의 스토리와 상징성)
+BIRTHSTONES = {
+    1: {
+        "name": "가넷",
+        "eng": "Garnet",
+        "icon": "🍷",
+        "symbol": "진실과 변치 않는 우정, 충성",
+        "color": "딥 버건디 레드",
+        "desc": "라틴어의 '씨앗(Granum)'에서 유래한 가넷은 어둠 속에서도 빛을 잃지 않는 등불처럼 착용자를 지켜준다고 전해집니다. 고결한 충정과 흔들리지 않는 사랑을 약속하는 보석입니다.",
+        "keywords": ["진실", "불변의 신의", "지혜", "권위"]
     },
-    "ENFP": {
-        "place": "인도네시아 발리 우붓 🌴",
-        "tagline": "자유로운 영혼의 우당탕탕 힐링 모험",
-        "desc": "요가 클래스에서 친구도 사귀고, 푸르른 정글 그네를 타며 긍정 에너지를 100% 충전해요!",
-        "tips": ["정글 그네 타기", "현지 마켓에서 알록달록 원피스 사기", "우연히 만난 여행자와 수다떨기"]
+    2: {
+        "name": "자수정",
+        "eng": "Amethyst",
+        "icon": "🔮",
+        "symbol": "평화와 고결함, 맑은 정신",
+        "color": "로열 바이올렛",
+        "desc": "과거 왕실과 귀족의 상징이었던 짙은 보랏빛의 자수정은 마음을 평온하게 가라앉히고 직관을 맑게 깨워줍니다. 차분한 통찰력과 내면의 깊은 평화를 선사합니다.",
+        "keywords": ["성실", "내면의 평화", "직관", "고결"]
     },
-    "ISFJ": {
-        "place": "일본 교토 아라시야마 🍵",
-        "tagline": "포근하고 정갈한 골목길 산책",
-        "desc": "사각사각 대나무 숲 소리와 따뜻한 말차 라떼가 지친 마음을 다정하게 안아줍니다.",
-        "tips": ["아침 일찍 대나무 숲 걷기", "아기자기한 도자기 소품 구경", "따뜻한 당고 먹기"]
+    3: {
+        "name": "아쿠아마린",
+        "eng": "Aquamarine",
+        "icon": "🌊",
+        "symbol": "영원한 젊음과 행복, 총명",
+        "color": "시스루 오션 블루",
+        "desc": "'바다의 물'이라는 어원을 지닌 아쿠아마린은 고대 뱃사람들의 안전한 항해를 지키는 부적이었습니다. 흐르는 물처럼 유연한 지혜와 영원한 청춘의 온기를 품고 있습니다.",
+        "keywords": ["영원한 청춘", "행복", "치유", "화합"]
     },
-    "ESFJ": {
-        "place": "스페인 바르셀로나 ☀️",
-        "tagline": "따사로운 햇살과 활기찬 타파스 파티",
-        "desc": "누구와 가도 행복해지는 마법 같은 도시! 소중한 사람들과 맛있는 음식을 나누며 추억을 쌓아요.",
-        "tips": ["보케리아 시장 먹방 투어", "가우디 건축물 앞에서 인생샷 찍어주기", "플라멩코 공연 관람"]
+    4: {
+        "name": "다이아몬드",
+        "eng": "Diamond",
+        "icon": "💎",
+        "symbol": "영원불멸의 사랑과 순결, 승리",
+        "color": "프리즘 클리어",
+        "desc": "지구상에서 가장 견고하며 순수한 빛을 품은 광물입니다. 세월의 흐름에도 마모되지 않는 완벽한 순결함과 승리, 그리고 무엇과도 바꿀 수 없는 불멸의 서약을 의미합니다.",
+        "keywords": ["불멸", "승리", "고결한 사랑", "순결"]
     },
-    "INTJ": {
-        "place": "스위스 체르마트 🏔️",
-        "tagline": "완벽하고 고요한 알프스 설경",
-        "desc": "완벽하게 정돈된 기차를 타고 마터호른을 마주하며 혼자만의 사색을 깊이 즐겨보세요.",
-        "tips": ["산악열차 시간표 사전 체크", "조용한 산장에서 따뜻한 퐁뒤 먹기", "별빛 쏟아지는 밤하늘 보기"]
+    5: {
+        "name": "에메랄드",
+        "eng": "Emerald",
+        "icon": "🌿",
+        "symbol": "생명력과 부활, 찬란한 행운",
+        "color": "딥 벨벳 그린",
+        "desc": "클레오파트라가 가장 사랑했던 보석으로, 만물이 소생하는 5월의 짙은 녹음을 상징합니다. 지친 시야와 영혼을 달래주며 새로운 시작을 축복하는 신비로운 에너지를 지닙니다.",
+        "keywords": ["새로운 시작", "행운", "영원한 생명", "통찰"]
     },
-    "ENTJ": {
-        "place": "미국 뉴욕 맨해튼 🗽",
-        "tagline": "반짝이는 야경과 심장을 뛰게 하는 빌딩숲",
-        "desc": "세상의 중심에서 끝없는 영감을 얻고, 효율적인 루트로 알차게 뉴욕을 정복해보세요!",
-        "tips": ["탑오브더락 전망대 야경", "브로드웨이 뮤지컬 명당 예매", "센트럴파크 아침 조깅"]
+    6: {
+        "name": "진주",
+        "eng": "Pearl",
+        "icon": "🦪",
+        "symbol": "순결과 건강, 기품 있는 아름다움",
+        "color": "루미너스 아이보리",
+        "desc": "바다의 품에서 오랜 인내 끝에 탄생하는 유일한 유기질 보석입니다. 은은하고 우아한 오리엔트 광채는 시간이 흘러도 변하지 않는 클래식한 기품과 순수를 보여줍니다.",
+        "keywords": ["청순", "건강", "고귀한 기품", "인내"]
     },
-    "INFJ": {
-        "place": "체코 프라하 🏰",
-        "tagline": "돌담길에 스며든 낭만과 깊은 위로",
-        "desc": "노을 지는 카를교를 걸으며 마음속 깊은 생각들을 천천히 정리하기 가장 좋은 도시예요.",
-        "tips": ["새벽 카를교 산책", "프라하성 뷰 카페에서 글쓰기", "오르골 가게 구경하기"]
+    7: {
+        "name": "루비",
+        "eng": "Ruby",
+        "icon": "🌹",
+        "symbol": "열정과 용기, 꺼지지 않는 사랑",
+        "color": "피죤 블러드 레드",
+        "desc": "'보석의 여왕'이라 불리는 루비는 타오르는 불꽃 같은 붉은빛으로 착용자에게 강력한 생명력과 용기를 북돋아 줍니다. 운명적인 매력과 불타는 정열의 표상입니다.",
+        "keywords": ["열정", "정의", "불타는 사랑", "위엄"]
     },
-    "ENFJ": {
-        "place": "이탈리아 피렌체 🎨",
-        "tagline": "르네상스 감성과 낭만적인 붉은 지붕",
-        "desc": "두오모 쿠폴라에 올라 따스한 주황빛 도시를 내려다보며 벅찬 사랑과 감동을 느껴보세요.",
-        "tips": ["미켈란젤로 광장에서 와인 마시기", "가죽 시장에서 귀여운 키링 맞추기", "젤라또 맛집 도장깨기"]
+    8: {
+        "name": "페리도트",
+        "eng": "Peridot",
+        "icon": "✨",
+        "symbol": "부부의 화합과 희망, 어둠의 극복",
+        "color": "올리브 라임 골드",
+        "desc": "운석 속에서도 발견되어 '우주의 보석'이라 불리는 황록색 결정입니다. 밤에도 빛을 잃지 않아 불안과 공포를 씻어내고, 가정의 화목과 따스한 희망을 전합니다.",
+        "keywords": ["화합", "희망", "지혜", "안식"]
     },
-    "ISTP": {
-        "place": "뉴질랜드 퀸스타운 🪂",
-        "tagline": "스릴 만점 자연 속 액티비티 천국",
-        "desc": "말보다는 행동! 번지점프, 루지, 제트보트로 일상의 지루함을 한 방에 날려버려요.",
-        "tips": ["퍼그버거 먹기", "스카이라인 루지 연속 3번 타기", "호숫가 잔디밭에서 멍때리기"]
+    9: {
+        "name": "사파이어",
+        "eng": "Sapphire",
+        "icon": "🌌",
+        "symbol": "진실과 성실, 지혜와 불변",
+        "color": "로열 미드나잇 블루",
+        "desc": "가장 깊은 밤하늘을 닮은 사파이어는 예로부터 사제와 왕실의 신뢰를 상징했습니다. 흔들리지 않는 도덕적 지조와 현명한 판단력을 상징하는 품격 있는 보석입니다.",
+        "keywords": ["성실", "지조", "진실", "고결한 영혼"]
     },
-    "ESTP": {
-        "place": "태국 방콕 툭툭 🛺",
-        "tagline": "화려한 야시장과 도파민 팡팡 나이트라이프",
-        "desc": "맛있는 길거리 음식, 신나는 루프탑 바, 반짝이는 불빛 속에서 순간을 만끽하세요!",
-        "tips": ["야시장에서 똠얌꿍 & 로띠 먹기", "화려한 루프탑 바 가기", "시원한 타이 마사지 받기"]
+    10: {
+        "name": "오팔",
+        "eng": "Opal",
+        "icon": "🪞",
+        "symbol": "환희와 창의성, 다채로운 순수",
+        "color": "오로라 무지갯빛",
+        "desc": "빛의 각도에 따라 무지갯빛 스펙트럼이 춤추는 유색효과(Play of Color)를 지녔습니다. 자유로운 상상력과 아티스틱한 영감, 순수한 환희의 세계를 비춰줍니다.",
+        "keywords": ["영감", "희망", "창의성", "행복"]
     },
-    "ISFP": {
-        "place": "프랑스 니스 & 에즈 🌊",
-        "tagline": "지중해의 푸른 바다와 여유로운 낮잠",
-        "desc": "아무 계획 없이 해변가 자갈밭에 누워 파도 소리를 듣고 젤라또를 먹는 것만으로도 충전 완료!",
-        "tips": ["해변 파라솔 아래서 낮잠", "골목길 빈티지 상점 구경", "바다 보며 납작복숭아 먹기"]
+    11: {
+        "name": "토파즈",
+        "eng": "Topaz",
+        "icon": "🍂",
+        "symbol": "건강과 우정, 찬란한 희망",
+        "color": "임페리얼 앰버 골드",
+        "desc": "태양의 눈부신 에너지를 머금은 듯 온화한 황금빛을 발산합니다. 슬픔을 걷어내고 따뜻한 우정을 맺어주며, 신체와 마음에 든든한 활력을 불어넣습니다.",
+        "keywords": ["우정", "활력", "희망", "결백"]
     },
-    "ESFP": {
-        "place": "미국 하와이 와이키키 🌺",
-        "tagline": "알로하! 훌라 댄스와 유쾌한 서핑",
-        "desc": "우쿨렐레 음악과 시원한 파도! 보는 사람까지 기분 좋아지는 발랄한 에너지를 뿜어내봐요.",
-        "tips": ["초보 서핑 강습 받기", "꽃핀 꽂고 셀카 남기기", "시원한 아사이볼 먹기"]
-    },
-    "INTP": {
-        "place": "아이슬란드 레이캬비크 🌌",
-        "tagline": "신비로운 오로라와 지구 밖 풍경",
-        "desc": "화산, 빙하, 간헐천, 오로라까지! 자연의 경이로운 원리를 관찰하며 조용히 탐험해요.",
-        "tips": ["블루라군 온천욕", "오로라 헌팅 투어 참여", "검은 모래 해변 산책"]
-    },
-    "ENTP": {
-        "place": "영국 런던 🎡",
-        "tagline": "클래식과 펑키함이 공존하는 아이디어의 장",
-        "desc": "전통적인 박물관부터 힙한 쇼디치 골목까지, 지루할 틈 없이 새로운 자극이 넘쳐나요.",
-        "tips": ["대영박물관 둘러보기", "쇼디치 빈티지 마켓 탐험", "런던아이 타고 야경 보기"]
-    },
-    "ISTJ": {
-        "place": "독일 뮌헨 🍺",
-        "tagline": "질서정연하고 클래식한 매력",
-        "desc": "신뢰감 넘치는 도시 환경과 정확한 대중교통! 마음 편안하게 시원한 맥주와 학세를 즐겨요.",
-        "tips": ["마리엔 광장 시계탑 공연 보기", "전통 브루어리에서 시원한 라거 마시기", "BMW 박물관 방문"]
-    },
-    "ESTJ": {
-        "place": "싱가포르 🏙️",
-        "tagline": "완벽하고 쾌적한 도심 속 가든",
-        "desc": "치안 최고, 인프라 최고! 계획대로 척척 맞아떨어지는 깔끔하고 화려한 시티 라이프를 즐겨보세요.",
-        "tips": ["가든스 바이 더 베이 야경 쇼", "인피니티 풀에서 인생샷", "칠리크랩 알차게 즐기기"]
+    12: {
+        "name": "탄자나이트",
+        "eng": "Tanzanite",
+        "icon": "❄️",
+        "symbol": "신비로운 변혁과 영성, 고귀함",
+        "color": "벨벳 블루-바이올렛",
+        "desc": "킬리만자로의 석양빛을 담아낸 20세기 최고의 발견으로 꼽힙니다. 푸른빛과 자줏빛이 매혹적으로 교차하며, 새로운 차원의 시작과 의식의 성장을 이끌어줍니다.",
+        "keywords": ["변혁", "신비", "지성", "고귀한 성공"]
     }
 }
 
-# 4. 헤더 뷰
-st.markdown('<div class="cute-title">🎀 퐁당! MBTI 여행 연구소 ✈️</div>', unsafe_allow_html=True)
-st.markdown('<div class="cute-sub">너의 MBTI를 콕 찌르면 가장 어울리는 러블리 여행지를 찾아줄게! (｡♥‿♥｡)</div>', unsafe_allow_html=True)
+# 4. 브랜딩 헤더
+st.markdown('<div class="brand-title">L\'Étoile Joaillerie</div>', unsafe_allow_html=True)
+st.markdown('<div class="brand-sub">당신이 태어난 순간에 깃든 영원의 빛을 마주해보세요</div>', unsafe_allow_html=True)
 
-# 5. MBTI 선택 인풋
-mbti_list = sorted(list(DESTINATIONS.keys()))
-selected_mbti = st.selectbox(
-    "💖 당신의 MBTI를 골라주세요:",
-    options=mbti_list,
-    index=0
-)
+# 5. 월 선택 셀렉트박스
+month_options = [f"{i}월 (Month of {i:02d})" for i in range(1, 13)]
+selected_str = st.selectbox("당신의 탄생월을 선택하십시오", month_options, index=0)
+selected_month = int(selected_str.split("월")[0])
 
-# 6. 추천 버튼 클릭 시 인터랙션
-if st.button("✨ 나만의 찰떡 여행지 찾기 뿅! ✨"):
-    # 귀여운 축하 효과
-    st.balloons()
+# 6. 감정 버튼 클릭 시 결과 카드 출력
+if st.button("EXAMINE YOUR GEMSTONE"):
+    gem = BIRTHSTONES[selected_month]
+    tags_html = "".join([f'<span class="gem-tag">✦ {kw}</span>' for kw in gem["keywords"]])
     
-    info = DESTINATIONS[selected_mbti]
-    
-    badges_html = "".join([f'<span class="pill-badge"># {tip}</span>' for tip in info["tips"]])
-    
-    # 결과 카드 렌더링
     st.markdown(f"""
-    <div class="cute-card">
-        <h3 style="color: #ff6584; margin-top:0;">💌 {selected_mbti} 맞춤 티켓 도착!</h3>
-        <h2 style="color: #2c3e50; font-size: 1.8rem; margin: 8px 0;">{info['place']}</h2>
-        <p style="color: #8e7dbe; font-weight: 600; font-size: 1.1rem; margin-bottom: 12px;">"{info['tagline']}"</p>
-        <p style="color: #555; line-height: 1.6; font-size: 0.98rem;">{info['desc']}</p>
-        <hr style="border: 0; border-top: 1px dashed #ffd1dc; margin: 16px 0;">
-        <p style="font-weight: 700; color: #ff6584; margin-bottom: 8px;">🎀 연구소가 추천하는 즐길거리:</p>
-        <div>{badges_html}</div>
+    <div class="gem-card">
+        <div class="gem-icon">{gem['icon']}</div>
+        <div class="gem-name">{gem['name']}</div>
+        <div class="gem-eng">{gem['eng']} · {gem['color']}</div>
+        <div class="gem-divider"></div>
+        <div class="gem-meaning">"{gem['symbol']}"</div>
+        <p class="gem-desc">{gem['desc']}</p>
+        <div class="tag-container">
+            {tags_html}
+        </div>
     </div>
     """, unsafe_allow_html=True)
-    
-    # 귀여운 행운 메시지
-    lucky_phrases = [
-        "비행기 옆자리에 귀여운 고양이가 타는 행운이 따를지도 몰라요! 🐾",
-        "여행지에서 평생 잊지 못할 노을을 만나게 될 거예요! 🌅",
-        "가장 맛있는 디저트 가게가 우연히 눈앞에 나타날 거예요! 🍰"
-    ]
-    st.success(f"🍀 오늘의 여행 행운 포춘: {random.choice(lucky_phrases)}")
 
-# 7. 푸터
+# 7. 품격 있는 푸터
 st.markdown("""
-<div style="text-align: center; color: #c0b0c5; font-size: 0.85rem; margin-top: 40px;">
-    Made with 💖 for cozy travelers | Have a lovely trip!
+<div style="text-align: center; color: #5a6474; font-size: 0.78rem; letter-spacing: 0.15em; margin-top: 50px; text-transform: uppercase;">
+    Haute Joaillerie Atelier · Eternal Elegance
 </div>
 """, unsafe_allow_html=True)
